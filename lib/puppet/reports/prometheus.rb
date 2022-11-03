@@ -138,6 +138,7 @@ EOS
     end
 
     File.open(filename, 'w') do |file|
+      file.flock(File::LOCK_EX)
       file.write(definitions)
       if File.exist?(yaml_filename)
         file.write("# Old metrics\n")
@@ -151,6 +152,7 @@ EOS
       new_metrics.each do |k, v|
         file.write("#{k} #{v}\n")
       end
+      file.flock(File::LOCK_UN)
     end
 
     File.open(yaml_filename, 'w') do |yaml_file|
