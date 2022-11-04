@@ -139,15 +139,6 @@ EOS
 
     File.open("#{filename}.tmp", 'w') do |file|
       file.write(definitions)
-      if File.exist?(yaml_filename)
-        file.write("# Old metrics\n")
-        existing_metrics = YAML.load_file(yaml_filename)
-        existing_metrics.each do |k, _v|
-          file.write("#{k} -1\n") unless new_metrics.include?(k)
-        end
-      end
-
-      file.write("# New metrics\n")
       new_metrics.each do |k, v|
         file.write("#{k} #{v}\n")
       end
